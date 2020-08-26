@@ -34,17 +34,17 @@ function Game(){
         return generateEmptyGrid();
     })
     const [gen, setGen] = useState(0)
-    
 
+    
     const playRef = useRef(play);
     playRef.current = play
-
+    
     const playing = useCallback(() => {
         if(!playRef.current){
             return
         }
 
-       
+        setGen(count => count + 1)
        
         setGrid((oldGrid) => {
             
@@ -66,6 +66,7 @@ function Game(){
                             gridCopy[i][j] = 1
                         }
                     }  
+                    
                 }
             })
         })
@@ -90,7 +91,9 @@ function Game(){
                                     const newGrid = produce(grid, (gridCopy) => {
                                         gridCopy[i][k] = grid[i][k] ? 0 : 1;
                                     });
+                                    
                                     setGrid(newGrid)
+                                    
                                 }}
                                 style={{
                                     width: 15,
@@ -102,6 +105,7 @@ function Game(){
                                 />
                             )
                         })
+                        
                     )
                 })}
 
@@ -109,7 +113,7 @@ function Game(){
             <div className="buttons">
             <button onClick={() => {setPlay(true); playRef.current = true; playing()}}>Start</button>
             <button onClick={() => {setPlay(false); playRef.current = false;}}>Stop</button>
-            <button onClick={() => {setGrid(generateEmptyGrid())}}>Reset</button>
+            <button onClick={() => {setGrid(generateEmptyGrid()); setGen(0)}}>Reset</button>
             <button onClick={() => {
                 const rows = []
                 for(let i =0; i < numRows; i++){
@@ -117,6 +121,7 @@ function Game(){
                 }
                 setGrid(rows)
             }}>Random</button>
+            <p>Generation: {gen}</p>
             
             </div>
         </>
